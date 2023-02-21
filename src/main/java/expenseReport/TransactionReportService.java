@@ -74,9 +74,9 @@ public class TransactionReportService {
         Map<String, BigDecimal> transactionsByExpenses = transactionsList.stream()
                 .filter(t -> t.getAmount().compareTo(BigDecimal.ZERO) < 0)
                 .collect(Collectors.groupingBy(Transaction::getCategory,
-                                               Collectors.reducing(BigDecimal.ZERO, Transaction::getAmount, BigDecimal::add)));
+                                                Collectors.reducing(BigDecimal.ZERO, Transaction::getAmount, BigDecimal::add)));
        return transactionsByExpenses.entrySet() .stream()
-                                                .max((v1, v2) -> v1.getValue().abs().compareTo(v1.getValue().abs()))
+                                                .max(Comparator.comparing(v -> v.getValue().abs()))
                                                 .get().getKey();
     }
 }
